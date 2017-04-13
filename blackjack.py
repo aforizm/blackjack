@@ -24,6 +24,11 @@ class BJ_Deck(cards.Deck):
 			for rank in BJ_Card.RANKS:
 				self.cards.append(BJ_Card(rank, suit))
 
+	@property #возвращает количество оставшихся карт
+	def ostatok(self):
+		return len(self.cards) == 52
+		
+
 
 class BJ_Hand(cards.Hand):
 	"""'Рука': набор карт у одного игрока"""
