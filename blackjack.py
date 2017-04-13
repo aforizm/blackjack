@@ -180,5 +180,6 @@ def main():
 		except:
 			system('cls')
 	input('------.......press enter to exit...-------')
+	input('..good bye...')
 
 main()
