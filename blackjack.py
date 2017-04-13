@@ -27,7 +27,7 @@ class BJ_Deck(cards.Deck):
 	@property #возвращает количество оставшихся карт
 	def ostatok(self):
 		return len(self.cards) == 52
-		
+
 
 
 class BJ_Hand(cards.Hand):
@@ -168,6 +168,7 @@ class BJ_Game(object):
 
 def main():
 	print('\t\tWelcome to Black Jack\n')
+	print
 	names =[]
 	number = games.ask_number('Сколько всего игроков?(1-7)' , low = 1, high =8)
 	for i in range(number):
