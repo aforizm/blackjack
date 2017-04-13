@@ -184,7 +184,6 @@ def main():
 	game = BJ_Game(names)
 	again = None
 	while again != 'n':
-		print(game.deck, " всего - ", len(game.deck.cards))
 		game.reload_deck()
 		game.play()
 		again = games.ask_yes_no("\nХотите сыграть еще? ")
