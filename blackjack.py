@@ -32,9 +32,10 @@ class BJ_Deck(cards.Deck):
 
 class BJ_Hand(cards.Hand):
 	"""'Рука': набор карт у одного игрока"""
-	def __init__(self, name):
+	def __init__(self, name, credits = 500):
 		super(BJ_Hand,self).__init__()
 		self.name = name
+		self.credits = credits
 
 	def __str__(self):
 		rep = self.name + ':\t' + super(BJ_Hand, self).__str__()
