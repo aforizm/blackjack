@@ -130,6 +130,10 @@ class BJ_Game(object):
 			if player.is_busted():
 				player.bust()
 
+	def prnt(self):
+		print(self.deck)
+		return self.deck.ostatok
+
 	def play(self):
 		#сдача по две карты
 		self.deck.deal(self.players + [self.dealer], per_hand = 2)
@@ -168,7 +172,6 @@ class BJ_Game(object):
 
 def main():
 	print('\t\tWelcome to Black Jack\n')
-	print
 	names =[]
 	number = games.ask_number('Сколько всего игроков?(1-7)' , low = 1, high =8)
 	for i in range(number):
@@ -178,13 +181,11 @@ def main():
 	game = BJ_Game(names)
 	again = None
 	while again != 'n':
+		print(game.prnt())
 		game.play()
 		again = games.ask_yes_no("\nХотите сыграть еще? ")
 
-		try:
-			system('clear')
-		except:
-			system('cls')
+		
 	input('.......press enter to exit.......')
 
 main()
