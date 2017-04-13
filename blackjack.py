@@ -26,7 +26,7 @@ class BJ_Deck(cards.Deck):
 
 	@property #возвращает количество оставшихся карт
 	def ostatok(self):
-		return len(self.cards) == 52
+		return len(self.cards)
 
 
 
@@ -130,9 +130,12 @@ class BJ_Game(object):
 			if player.is_busted():
 				player.bust()
 
-	def prnt(self):
-		print(self.deck)
-		return self.deck.ostatok
+	def reload_deck(self):
+		"""Если в колоде меньше 30 карт, то обновим колоду"""
+		if  self.deck.ostatok < 30:
+			self.deck.cards = []
+			self.deck.populate()
+			self.deck.shuffle()
 
 	def play(self):
 		#сдача по две карты
@@ -181,7 +184,8 @@ def main():
 	game = BJ_Game(names)
 	again = None
 	while again != 'n':
-		print(game.prnt())
+		print(game.deck, " всего - ", len(game.deck.cards))
+		game.reload_deck()
 		game.play()
 		again = games.ask_yes_no("\nХотите сыграть еще? ")
 
