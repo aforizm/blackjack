@@ -179,7 +179,6 @@ def main():
 			system('clear')
 		except:
 			system('cls')
-	input('------.......press enter to exit...-------')
-	input('..good bye!!...')
+	input('.......press enter to exit.......')
 
 main()
