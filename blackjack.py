@@ -41,6 +41,9 @@ class BJ_Hand(cards.Hand):
 		rep = self.name + ':\t' + super(BJ_Hand, self).__str__()
 		if self.total:
 			rep += '(' + str(self.total) + ')'
+
+		if self.credits:
+			rep += '\t' + 'credits: ' + str(self.credits)
 		return rep
 
 	@property
