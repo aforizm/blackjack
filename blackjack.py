@@ -155,6 +155,10 @@ class BJ_Game(object):
 		if not self.still_playing:
 			#все игроки перебрали, покажем только "руку" дилера
 			print(self.dealer)
+			#удалим по 100 кредитов кажому игроку
+			for player in self.players:
+				player.credits -= 100
+
 		else:
 			#сдача доплнительных карт дилеру
 			print(self.dealer)
