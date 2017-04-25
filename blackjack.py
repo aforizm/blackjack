@@ -123,7 +123,7 @@ class BJ_Game(object):
 		self.deck.populate()
 		self.deck.shuffle()
 		self.kon = 0 #кон стола
-		self.stavka = 500 #фиксированная ставка кажды раунд
+		self.stavka = 100 #фиксированная ставка каждый раунд
 
 
 	@property
