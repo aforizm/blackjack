@@ -46,6 +46,10 @@ class BJ_Hand(cards.Hand):
 			rep += '\t' + 'credits: ' + str(self.credits)
 		return rep
 
+	def stavka(self, stavka):
+		"""вычитает из кредита игрока размер ставки"""
+		self.credits -= stavka
+
 	@property
 	def total(self):
 		#eсли у одной из карт value равно None, то и все свойство равно None
@@ -118,6 +122,9 @@ class BJ_Game(object):
 		self.deck = BJ_Deck()
 		self.deck.populate()
 		self.deck.shuffle()
+		self.kon = 0 #кон стола
+		self.stavka = 500 #фиксированная ставка кажды раунд
+
 
 	@property
 	def still_playing(self):
@@ -141,7 +148,24 @@ class BJ_Game(object):
 			self.deck.populate()
 			self.deck.shuffle()
 
-	def play(self):
+	def isBankrot(self):
+		'''Если игрок банкрот'''
+		for player in self.players:
+			if player.credits <= 0:
+				print('\nИгрок {} покинул игру так как стал Банкротом'.format(player.name))
+				self.players.remove(player)
+
+
+	def play(self):	
+		#проверка на банкрота
+		self.isBankrot()
+		#игроки и дилер делают ставки	
+		for player in self.players:
+			player.stavka(self.stavka)
+			self.kon += self.stavka
+		self.dealer.stavka(self.stavka)
+		self.kon += self.stavka
+		print('На кону {} кредитов\n'.format(self.kon))
 		#сдача по две карты
 		self.deck.deal(self.players + [self.dealer], per_hand = 2)
 		self.dealer.flip_first_card() #первая из карт, сданных дилеру, переворачивается рубашкой вверх
@@ -155,10 +179,8 @@ class BJ_Game(object):
 		if not self.still_playing:
 			#все игроки перебрали, покажем только "руку" дилера
 			print(self.dealer)
-			#удалим по 100 кредитов кажому игроку
-			for player in self.players:
-				player.credits -= 100
-
+			self.dealer.credits += self.kon
+			self.kon = 0
 		else:
 			#сдача доплнительных карт дилеру
 			print(self.dealer)
@@ -167,19 +189,25 @@ class BJ_Game(object):
 				#выигрывают все кто остался в игре
 				for player in self.still_playing:
 					player.win()
+					player.credits += self.kon/len(self.still_playing)
 			else:
 				#сравниваем сумму очков у дилера и игроков оставшихся в игре
 				for player in self.still_playing:
 					if player.total > self.dealer.total:
 						player.win()
+						player.credits += self.kon
+						self.kon = 0
 					elif player.total < self.dealer.total:
 						player.lose()
+						self.dealer.credits += self.kon
+						self.kon = 0
 					else:
 						player.push()
 		#удаление всех карт
 		for player in self.players:
 			player.clear()
 		self.dealer.clear()
+		self.kon = 0 #обнуление кона
 
 def main():
 	print('\t\tWelcome to Black Jack\n')
@@ -191,7 +219,7 @@ def main():
 		print()
 	game = BJ_Game(names)
 	again = None
-	while again != 'n':
+	while again != 'n' and len(game.still_playing) != 0:
 		game.reload_deck()
 		game.play()
 		again = games.ask_yes_no("\nХотите сыграть еще? ")
